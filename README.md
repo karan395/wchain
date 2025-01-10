@@ -60,8 +60,8 @@ balances[msg.sender] -= amount;
 ```
 4. Code Review: Identify and explain all security vulnerabilities in the above contract.
 
-
-1. Overwrite Vulnerability in deposit()
+Ans
+ 1. Overwrite Vulnerability in deposit()
 Issue: The balances mapping is set to msg.value on each deposit(), overwriting any previous balance.
 Impact: Users lose the ability to accumulate balances across multiple deposits since the balance is replaced, not incremented.
 Fix: Update balances by adding the deposited amount instead of overwriting:
@@ -86,30 +86,10 @@ require(success, "Ether transfer failed");
 Issue: The contract does not emit events for critical actions like deposit and withdraw.
 Impact: Reduces transparency and makes it difficult to track transactions on the blockchain.
 
-code
-
-event Deposit(address indexed user, uint amount);
-event Withdrawal(address indexed user, uint amount);
-
-function deposit() public payable {
-    balances[msg.sender] += msg.value;
-    emit Deposit(msg.sender, msg.value);
-}
-
-function withdraw(uint amount) public {
-    require(balances[msg.sender] >= amount);
-    balances[msg.sender] -= amount;
-    (bool success, ) = msg.sender.call{value: amount}("");
-    require(success, "Ether transfer failed");
-    emit Withdrawal(msg.sender, amount);
-}
-
-
 5. No Access Control or Guard Against Excessive Withdrawals
 Issue: No mechanism prevents unauthorized access or rate-limiting for withdraw calls.
 Impact: Malicious users could repeatedly call withdraw if combined with reentrancy attacks, draining funds quickly.
 Fix: Implement mechanisms like mutex locks to prevent reentrancy and ensure proper access control.
-
 
 6. Missing Fallback or Receive Function
 Issue: The contract does not have a fallback or receive function to handle direct Ether transfers.
@@ -119,11 +99,6 @@ Fix: Add a receive() function:
 receive() external payable {
     balances[msg.sender] += msg.value;
 }
-
-
-
-
-
 5. Problem Solving: Write a corrected contract version implementing proper security
 measures.
 
@@ -165,9 +140,7 @@ contract SecureContract {
     }
 }
 
-
-
-
+------------------------------------------------------------------------------------------
 EVM Development (20 points)
 Smart Contract Development
 Coding Task:
@@ -181,7 +154,7 @@ A time-bound feature or mechanism is relevant to your DApp's purpose.
 Automated calculations or outcomes based on your chosen use case (e.g., results,
 rewards, etc.).
 
-
+Ans :-- refer to   wcontracts/contracts/Crowdfunding.sol
 
 OR
 System Design:
@@ -201,8 +174,6 @@ Security: Address potential security risks and mitigation strategies.
 Upgrade Mechanisms: Explain how your design can accommodate future upgrades
 and scalability.
 
-
-
 _________________________________________________________________________
 Testing and Deployment (20 points)
 Code Implementation:
@@ -217,6 +188,10 @@ function swap(address from token, address toToken, uint256 amount) external;
 function getExchangeRate(address from token, address toToken) external view returns
 (uint256);
 }
+
+ANS:-- refer to this  /liquiditytask/contracts
+
+----------------------------------------------------------------------------------------
 Architecture (20 points)
 Instruction: Design a token bridge system between W Chain and Ethereum.
 Provide:
@@ -234,44 +209,5 @@ Gas optimization strategie
 Ans:-
 ### Diagram
 
-W Chain                              Ethereum
-----------------------------------------------
-+------------------------+
-|    User Interaction    |
-+------------------------+
-          |
-          | Initiates Cross-Chain Transfer
-          v
-+-----------------------------+     +-----------------------------+
-| Ethereum Bridge Module      |     | W Chain Bridge Module       |
-| (Token Lock/Unlock Logic)   |     | (Token Lock/Unlock Logic)   |
-+-----------------------------+     +-----------------------------+
-| - lockTokens(uint256)       |     | - lockTokens(uint256)       |
-| - unlockTokens(address, amt)|     | - unlockTokens(address, amt)|
-| - TransferStarted()         |     | - TransferStarted()         |
-| - TransferConfirmed()       |     | - TransferConfirmed()       |
-+-----------------------------+     +-----------------------------+
-          |                               |
-          |                               |
-  +-------+-------------------------------+-------+
-  |                                           |
-  v                                           v
-+---------------------+              +---------------------+
-| Event Relayer Node  |              | State Sync Relayer  |
-| (Listens for Events)|              | (Tracks Token State)|
-+---------------------+              +---------------------+
-          |                               |
-          | Relays Transfer Data          |
-          v                               v
-+---------------------+              +---------------------+
-| Ethereum Asset Pool |              | W Chain Asset Pool  |
-| (Handles Balances)  |              | (Handles Balances)  |
-+---------------------+              +---------------------+
-          |                               |
-Token Movement/Approval           Token Movement/Approval
-          |                               |
-          v                               v
-+---------------------+              +---------------------+
-| Ethereum User Wallet|              | W Chain User Wallet|
-| (Receives Tokens)   |              | (Receives Tokens)  |
-+---------------------+              +---------------------+
+refer to /diagram file 
+
