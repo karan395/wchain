@@ -1,0 +1,46 @@
+ wchain bridge diagram 
+ 
+                      +------------------------+
+|    User Interaction    |
++------------------------+
+          |
+          | Initiates Cross-Chain Transfer
+          v
++-----------------------------+     +-----------------------------+
+| Ethereum Bridge Module      |     | W Chain Bridge Module       |
+| (Token Lock/Unlock Logic)   |     | (Token Lock/Unlock Logic)   |
++-----------------------------+     +-----------------------------+
+| - lockTokens(uint256)       |     | - lockTokens(uint256)       |
+| - unlockTokens(address, amt)|     | - unlockTokens(address, amt)|
+| - TransferStarted()         |     | - TransferStarted()         |
+| - TransferConfirmed()       |     | - TransferConfirmed()       |
++-----------------------------+     +-----------------------------+
+          |                               |
+          |                               |
+  +-------+-------------------------------+-------+
+  |                                           |
+  v                                           v
++---------------------+              +---------------------+
+| Event Relayer Node  |              | State Sync Relayer  |
+| (Listens for Events)|              | (Tracks Token State)|
++---------------------+              +---------------------+
+          |                               |
+          | Relays Transfer Data          |
+          v                               v
++---------------------+              +---------------------+
+| Ethereum Asset Pool |              | W Chain Asset Pool  |
+| (Handles Balances)  |              | (Handles Balances)  |
++---------------------+              +---------------------+
+          |                               |
+Token Movement/Approval           Token Movement/Approval
+          |                               |
+          v                               v
++---------------------+              +---------------------+
+| Ethereum User Wallet|              | W Chain User Wallet|
+| (Receives Tokens)   |              | (Receives Tokens)  |
++---------------------+              +---------------------+
+
+
+
+
+
