@@ -1,0 +1,22 @@
+{
+  "name": "testdeploy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "chai": "^5.1.2",
+    "hardhat": "^2.22.17",
+    "mocha": "^11.0.1"
+  },
+  "dependencies": {
+    "hardhat-deploy": "^0.14.0"
+  }
+}
